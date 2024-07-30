@@ -59,26 +59,85 @@ module DiscourseChatIntegration::Provider::TeamsProvider
         )
     end
 
-    message = {
-      "@type": "MessageCard",
-      summary: topic.title,
-      sections: [
-        {
-          activityTitle:
-            "[#{topic.title} #{category} #{topic.tags.present? ? topic.tags.map(&:name).join(", ") : ""}](#{post.full_url})",
-          activitySubtitle:
-            post.excerpt(
-              SiteSetting.chat_integration_teams_excerpt_length,
-              text_entities: true,
-              strip_links: true,
-              remap_emoji: true,
-            ),
-          activityImage: post.user.small_avatar_url,
-          facts: [{ name: full_name, value: display_name }],
-          markdown: true,
-        },
-      ],
-    }
+    #message = {
+    #  "@type": "MessageCard",
+    #  summary: topic.title,
+    #  sections: [
+    #    {
+    #      activityTitle:
+    #        "[#{topic.title} #{category} #{topic.tags.present? ? topic.tags.map(&:name).join(", ") : ""}](#{post.full_url})",
+    #      activitySubtitle:
+    #        post.excerpt(
+    #          SiteSetting.chat_integration_teams_excerpt_length,
+    #          text_entities: true,
+    #          strip_links: true,
+    #          remap_emoji: true,
+    #        ),
+    #      activityImage: post.user.small_avatar_url,
+    #      facts: [{ name: full_name, value: display_name }],
+    #      markdown: true,
+    #    },
+    #  ],
+    #}
+
+      message: {
+        "@type": "AdaptiveCard",
+        "version": "1.0",
+        "body": [
+          {
+            "type": "Container",
+            "items": [
+              {
+                "type": "TextBlock",
+                "size": "extraLarge",
+                "weight": "bolder",
+                "text": topic.title,
+                "height": "stretch"
+              },
+              {
+                "type": "TextBlock",
+                "size": "medium",
+                "weight": "bolder",
+                "text": "Add events to your calendar",
+                "height": "stretch"
+              },
+              {
+                "type": "TextBlock",
+                "weight": "bolder",
+                "text": "The bot can send \r\rnotification to remind \r\ryou about the latest \r\revents and trainings.",
+                "wrap": true,
+                "height": "stretch"
+              },
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [],
+                    "height": "stretch"
+                  }
+                ]
+              },
+              {
+                "type": "ColumnSet",
+                "columns": [
+                  {
+                    "type": "Column",
+                    "items": [],
+                    "height": "stretch"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "Let's get started"
+          }
+        ]
+      }
 
     message
   end
